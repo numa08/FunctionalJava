@@ -1,4 +1,4 @@
-package function;
+package net.numa08.capter2;
 
 public interface Function2<A1, A2, R> {
 
