@@ -9,7 +9,7 @@ import org.junit.runners.JUnit4;
 public class Function1VoidTest {
 
     @Test
-    public void assertFunctioArgument() {
+    public void assertFunctionArgument() {
 
         final String expected = "argument";
 
@@ -20,5 +20,23 @@ public class Function1VoidTest {
             }
         };
         function.apply(expected);
+    }
+
+    @Test
+    public void assertFunctionArgumentType() {
+
+        final String string = "argument";
+
+        final Function1Void<String> function = new Function1Void<String>() {
+            @Override
+            public void apply(String arg) {
+                final Class<?> expected = string.getClass();
+                final Class<?> actual = arg.getClass();
+
+                Assert.assertSame("failure - argument type is invalid",expected, actual);
+            }
+        };
+
+        function.apply(string);
     }
 }
