@@ -1,6 +1,5 @@
 package net.numa08.capter2;
 
-import net.numa08.capter2.Function2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
