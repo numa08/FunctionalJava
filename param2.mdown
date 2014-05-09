@@ -1,0 +1,29 @@
+型安全とワイルドカードについて
+
+
+### 下限型つきのワイルドカード
+
+```java
+public interface Function1<T , R> {
+
+    R apply (T t);
+
+}
+```
+
+上記のインターフェース、`Function1`が定義されている際、実装部分(applyメソッド)の引数の型がString、返り値の型がObjectであるFunction1オブジェクトを引数にとるm1メソッドを考える。
+
+この際、メソッドm1に渡すFunction1オブジェクトを`Function<Object, Object>`としてもコンパイルに成功し、かつ型安全と呼べる様にm1メソッドを修正する。
+
+その結果、次のような修正を行うこととなる。
+
+
+```diff
+-   private void m1 (Function1<String, Object> f1) {
++   private void m1 (Function1<? super String, Object> f1) {
+        f1.apply("hello");
+    }
+```
+
+
+この修正は型安全と言える。f1の引数の型は下限型つきワイルドカードによって型を宣言する際にはStringかそのスーパークラスである必要となるため、`Function<Object, Object>`として宣言をすることができる。しかし、applyメソッドにおいては、下限型つきのワイルドカードであるため、引数にとりうる型はStringのみとなる。
