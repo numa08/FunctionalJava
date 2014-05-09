@@ -1,22 +1,13 @@
-型安全とワイルドカードについて
+## 第2章
+
+### 演習問題.4
+
+#### a
+
+あるメソッドm1はFunction1<String, Object>を引数にとります。Function1<Object, Object>型のインスタンスf1をm1に渡したら何が起きるでしょうか。Javaのコンパイラがf1をm1に渡すことを許可するようにしたいならば、どのようにm1の宣言を変更したらよいでしょうか。また、少なくとも「型安全」という視点から、なぜその変更が正しいと言えるのしょうか。
 
 
-### 下限型つきのワイルドカード
-
-```java
-public interface Function1<T , R> {
-
-    R apply (T t);
-
-}
-```
-
-上記のインターフェース、`Function1`が定義されている際、実装部分(applyメソッド)の引数の型がString、返り値の型がObjectであるFunction1オブジェクトを引数にとるm1メソッドを考える。
-
-この際、メソッドm1に渡すFunction1オブジェクトを`Function<Object, Object>`としてもコンパイルに成功し、かつ型安全と呼べる様にm1メソッドを修正する。
-
-その結果、次のような修正を行うこととなる。
-
+引数の型が異なるため、m1にf1を引数として渡すことはコンパイルエラーとなる。そこで、m1を次のように変更する。
 
 ```diff
 -   private void m1 (Function1<String, Object> f1) {
@@ -25,5 +16,20 @@ public interface Function1<T , R> {
     }
 ```
 
+下限境界ワイルドカードを利用してFunction<Object, Object>を引数として与えつつもFunction1#applyの引数はStringのままである。この修正で、f1のとりうる型引数の1つ目はStringあるいはそのsupertypeに限定される。とりうる型について明示的な制約が存在していることから、型安全であると言える。
 
-この修正は型安全と言える。f1の引数の型は下限型つきワイルドカードによって型を宣言する際にはStringかそのスーパークラスである必要となるため、`Function<Object, Object>`として宣言をすることができる。しかし、applyメソッドにおいては、下限型つきのワイルドカードであるため、引数にとりうる型はStringのみとなる。
+#### b
+
+同じメソッドm1について、今度はFunction1<String, String>型のf2関数を渡すとします。コンパイラがf2をm2に渡すことを許可するようにしたいならば、どのようにm1の宣言を変更したらよいでしょうか。型安全の観点から、なぜその変更が正しいと言えるでしょうか。
+
+
+m1を次のように修正します。
+
+```diff
+-   private void m1 (Function1<? super String, Object> f1) {
++   private void m1 (Function1<? super String, ? extends String> f1) {
+        f1.apply("hello");
+    }
+```
+
+上限境界ワイルドカードを利用することで、Function1#applyの返り値はStringのsubtypeであると制限された。この修正で、f2の型引数の2つめはStringやそのsubtypeに制約される。こちらも同様に、取りうる型について制約が存在していることから、型安全であると言える。

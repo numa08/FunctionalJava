@@ -24,6 +24,16 @@ public class FunctionTypeTest {
         };
 
         m1(f1);
+
+        final Function1<? super Number, Void> f2 = new Function1<Object, Void>() {
+            @Override
+            public Void apply(Object number) {
+                return null;
+            }
+        };
+
+        f2.apply(1);
+        f2.apply(1.1);
     }
 
     private Object m2 (Function1<? super String, ? extends String> f2) {
@@ -32,10 +42,10 @@ public class FunctionTypeTest {
 
     @Test
     public void invokeM2() {
-        final Function1<Object, String> f2 = new Function1<Object, String>() {
+        final Function1<String, String> f2 = new Function1<String, String>() {
             @Override
-            public String apply(Object s) {
-                return "hoge";
+            public String apply(String s) {
+                return "1";
             }
         };
 
