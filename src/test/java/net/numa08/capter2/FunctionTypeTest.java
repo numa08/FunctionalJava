@@ -26,20 +26,21 @@ public class FunctionTypeTest {
         m1(f1);
     }
 
-    private Object m2 (Function1<? super String, ? super String> f2) {
+    private Object m2 (Function1<? super String, ? extends String> f2) {
         return f2.apply("hello");
     }
 
     @Test
     public void invokeM2() {
-        final Function1<String, String> f2 = new Function1<String, String>() {
+        final Function1<Object, String> f2 = new Function1<Object, String>() {
             @Override
-            public String apply(String s) {
-                return "invoke!!" + s;
+            public String apply(Object s) {
+                return "hoge";
             }
         };
 
         final Object result = m2(f2);
         assertTrue("type is not safe?", result instanceof String);
     }
+
 }
