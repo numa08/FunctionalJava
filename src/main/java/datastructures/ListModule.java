@@ -1,8 +1,6 @@
 package datastructures;
 
-import net.numa08.capter2.Function1;
 import net.numa08.capter2.Function2;
-import option.None;
 import option.Option;
 
 import java.util.Arrays;
@@ -64,12 +62,12 @@ public class ListModule {
     public static final List<? extends Object> EMPTY = new List<Object>() {
         @Override
         public Option<Object> head() {
-            return new None<>();
+            return Option.none();
         }
 
         @Override
         public Option<List<Object>> tail() {
-            return new None<>();
+            return Option.none();
         }
 
         @Override

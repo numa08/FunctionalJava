@@ -4,9 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import static datastructures.ListModule.List;
-import static datastructures.ListModule.emptyList;
-import static datastructures.ListModule.list;
+import static datastructures.ListModule.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 

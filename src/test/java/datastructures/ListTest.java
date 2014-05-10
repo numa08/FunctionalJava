@@ -1,15 +1,12 @@
 package datastructures;
 
-import option.None;
 import option.Option;
 import option.Some;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import static datastructures.ListModule.List;
-import static datastructures.ListModule.emptyList;
-import static datastructures.ListModule.list;
+import static datastructures.ListModule.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -22,7 +19,7 @@ public class ListTest {
 
     @Test
     public void callingHeadOnAnEmptyListRaises() {
-        final Option<String> expected = new None<>();
+        final Option<String> expected = Option.none();
         final Option<String> actual = EMPTYS.head();
 
         assertThat("failure - empty list's head should be None", actual, is(expected));
@@ -30,7 +27,7 @@ public class ListTest {
 
     @Test
     public void callingTailOnAnEmptyListRaises() {
-        final Option<List<String>> expected = new None<>();
+        final Option<List<String>> expected = Option.none();
         final Option<List<String>> actual = EMPTYS.tail();
 
         assertThat("failure - empty list's tail should be None", actual, is(expected));

@@ -33,4 +33,5 @@ public final class Some<T> extends Option<T>{
     public int hashCode() {
         return 37 * value.hashCode();
     }
+
 }
