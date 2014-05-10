@@ -1,5 +1,10 @@
 package datastructures;
 
+import net.numa08.capter2.Function1;
+import net.numa08.capter2.Function2;
+
+import java.util.Arrays;
+
 public class ListModule {
     public static interface List<T> {
 
@@ -88,5 +93,26 @@ public class ListModule {
 
     public static <T> List<T> list(T head, List<T> tail) {
         return new NonEmptyList<>(head, tail);
+    }
+
+    public static <T> List<T> list(T... elems) {
+        if (elems.length == 0) {
+            return emptyList();
+        }
+        final Function2<T[], List<T>, List<T>> list = new Function2<T[], List<T>, List<T>>() {
+
+            @Override
+            public List<T> apply(T[] ts, List<T> tList) {
+                if (ts.length == 0) {
+                    return tList;
+                }
+
+                final List<T> l = list(ts[ts.length - 1], tList);
+                final T[] e = Arrays.copyOfRange(ts, 0, ts.length - 1);
+                return apply(e, l);
+            }
+        };
+        final List<T> empty = emptyList();
+        return list.apply(elems, empty);
     }
 }
