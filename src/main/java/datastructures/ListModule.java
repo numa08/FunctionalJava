@@ -2,29 +2,31 @@ package datastructures;
 
 import net.numa08.capter2.Function1;
 import net.numa08.capter2.Function2;
+import option.None;
+import option.Option;
 
 import java.util.Arrays;
 
 public class ListModule {
     public static interface List<T> {
 
-        public abstract T head();
-        public abstract List<T> tail();
+        public abstract Option<T> head();
+        public abstract Option<List<T>> tail();
         public abstract boolean isEmpty();
     }
 
     public static final class NonEmptyList<T> implements List<T> {
 
-        private final T head;
-        private final List<T> tail;
+        private final Option<T> head;
+        private final Option<List<T>> tail;
 
         @Override
-        public T head() {
+        public Option<T> head() {
             return head;
         }
 
         @Override
-        public List<T> tail() {
+        public Option<List<T>> tail() {
             return tail;
         }
 
@@ -34,8 +36,8 @@ public class ListModule {
         }
 
         protected NonEmptyList(T head, List<T> tail) {
-            this.head = head;
-            this.tail = tail;
+            this.head = Option.option(head);
+            this.tail = Option.option(tail);
         }
 
         @Override
@@ -55,23 +57,19 @@ public class ListModule {
 
         @Override
         public String toString() {
-            return "(" + head() + ", " + tail() + ")";
+            return "(" + head().get() + ", " + tail().get() + ")";
         }
     }
 
-    public static class EmptyListHasNoHead extends RuntimeException {}
-
-    public static class EmptyListHasNoTail extends RuntimeException {}
-
     public static final List<? extends Object> EMPTY = new List<Object>() {
         @Override
-        public Object head() {
-            throw new EmptyListHasNoHead();
+        public Option<Object> head() {
+            return new None<>();
         }
 
         @Override
-        public List<Object> tail() {
-            throw new EmptyListHasNoTail();
+        public Option<List<Object>> tail() {
+            return new None<>();
         }
 
         @Override

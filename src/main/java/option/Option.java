@@ -10,7 +10,7 @@ abstract public class Option<T> {
         return hasValue() ? get() : alternative;
     }
 
-    public static<T> Option<T> opt(T obj) {
+    public static<T> Option<T> option(T obj) {
         if (obj == null) {
             return new None<>();
         } else {

@@ -1,5 +1,8 @@
 package datastructures;
 
+import option.None;
+import option.Option;
+import option.Some;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -17,22 +20,28 @@ public class ListTest {
     List<String> EMPTYS = emptyList();
     List<Long> EMPTYL = emptyList();
 
-    @Test(expected = ListModule.EmptyListHasNoHead.class)
+    @Test
     public void callingHeadOnAnEmptyListRaises() {
-        EMPTYS.head();
+        final Option<String> expected = new None<>();
+        final Option<String> actual = EMPTYS.head();
+
+        assertThat("failure - empty list's head should be None", actual, is(expected));
     }
 
-    @Test(expected = ListModule.EmptyListHasNoTail.class)
+    @Test
     public void callingTailOnAnEmptyListRaises() {
-        EMPTYS.tail();
+        final Option<List<String>> expected = new None<>();
+        final Option<List<String>> actual = EMPTYS.tail();
+
+        assertThat("failure - empty list's tail should be None", actual, is(expected));
     }
 
     @Test
     public void callingTailOnAListWithMotlierElementsReturnsANonEmpty() {
         List<String> tail = list("one", list("two", EMPTYS));
 
-        final List<String> expected = list("two", EMPTYS);
-        final List<String> actual = tail.tail();
+        final Option<List<String>> expected = new Some<>(list("two", EMPTYS));
+        final Option<List<String>> actual = tail.tail();
 
         assertThat("failure - tail list is not equal", actual, is(expected));
     }
@@ -41,8 +50,8 @@ public class ListTest {
     public void callingHeadOnANonEmptyListReturnsTheHead() {
         List<String> list = list("one", EMPTYS);
 
-        final String expected = "one";
-        final String actual = list.head();
+        final Option<String> expected = new Some<>("one");
+        final Option<String> actual = list.head();
 
         assertThat("failure - head object is not equal", actual, is(expected));
     }
