@@ -50,7 +50,7 @@ public class ListModule {
 
         @Override
         public String toString() {
-            return "(" + head() + "," + tail() + ")";
+            return "(" + head() + ", " + tail() + ")";
         }
     }
 
