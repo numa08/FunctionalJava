@@ -1,5 +1,7 @@
 package datastructures;
 
+import net.numa08.capter2.Function1;
+import net.numa08.capter2.Function1Void;
 import net.numa08.capter2.Function2;
 import option.Option;
 
@@ -11,6 +13,12 @@ public class ListModule {
         public abstract Option<T> head();
         public abstract Option<List<T>> tail();
         public abstract boolean isEmpty();
+
+        public List<T> filter(Function1<T, Boolean> f);
+        public <T2> List<T2> map(Function1<T, T2> f);
+        public  <T2> T2 foldLeft(T2 seed, Function2<T2, T, T2> f);
+        public  <T2> T2 foldRight(T2 seed, Function2<T2, T, T2> f);
+        public void foreach(Function1Void<T> f);
     }
 
     public static final class NonEmptyList<T> implements List<T> {
@@ -33,6 +41,36 @@ public class ListModule {
             return false;
         }
 
+        @Override
+        public List<T> filter(Function1<T, Boolean> f) {
+            if (f.apply(head.get())) {
+                return list(head.get(), tail.get().filter(f));
+            } else {
+                return tail.get().filter(f);
+            }
+        }
+
+        @Override
+        public <T2> List<T2> map(Function1<T, T2> f) {
+            return list(f.apply(head.get()), tail.get().map(f));
+        }
+
+        @Override
+        public <T2> T2 foldLeft(T2 seed, Function2<T2, T, T2> f) {
+            return tail.get().foldLeft(f.apply(seed, head.get()), f);
+        }
+
+        @Override
+        public <T2> T2 foldRight(T2 seed, Function2<T2, T, T2> f) {
+            return tail.get().foldRight(f.apply(seed, head.get()), f);
+        }
+
+        @Override
+        public void foreach(Function1Void<T> f) {
+            f.apply(head.get());
+            tail.get().foreach(f);
+        }
+
         protected NonEmptyList(T head, List<T> tail) {
             this.head = Option.option(head);
             this.tail = Option.option(tail);
@@ -46,6 +84,7 @@ public class ListModule {
 
             List<?> that = (List<?>)obj;
             return head().equals(that.head()) && tail().equals(that.tail());
+
         }
 
         @Override
